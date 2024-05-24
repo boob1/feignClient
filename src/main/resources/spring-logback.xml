@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="currentEnv" source="spring.profiles.active"/>
+    <springProperty scope="context" name="applicationName" source="spring.application.name"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%level][%d{yyyy-MM-dd HH:mm:ss:SSS}][%X{X-B3-TraceId:-}][%X{X-B3-SpanId:-}][%thread][%logger][%L][%X{ESB_BUSS_SEQ}] : %msg%n</pattern>
+        </encoder>
+    </appender>
+   <!-- <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>[%level][%d{yyyy-MM-dd HH:mm:ss:SSS}][%X{X-B3-TraceId:-}][%X{X-B3-SpanId:-}][%thread][%logger][%L][%X{ESB_BUSS_SEQ}] : %msg%n</pattern>
+        </encoder>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <MaxHistory>60</MaxHistory>
+            <TotalSizeCap>10GB</TotalSizeCap>
+        </rollingPolicy>
+    </appender>-->
+
+    <!--<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>[%level][%d{yyyy-MM-dd HH:mm:ss:SSS}][%X{X-B3-TraceId:-}][%X{X-B3-SpanId:-}][%thread][%logger][%L][%X{ESB_BUSS_SEQ}] : %msg%n</pattern>
+        </encoder>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/error_log/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <MaxHistory>60</MaxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>-->
+  <!--  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>512</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>-->
+
+    <springProfile name="dev">
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+          <!--  <appender-ref ref="ASYNC"/>-->
+       <!--     <appender-ref ref="ERROR_FILE"/>-->
+         <!--   <appender-ref ref="grpc-log"/>　-->
+        </root>
+        <logger name="com.alibaba.nacos.client.naming" level="warn"/>
+        <logger name="org.apache.activemq.ActiveMQSession" level="ERROR"/>
+        <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="info"/>
+        <logger name="com.tlcb.common.util.HttpPoolClient" level="info"/>
+        <logger name="org.apache.kafka" level="info"/>
+        <logger name="org.apache.activemq" level="info"/>
+        <logger name="org.springframework" level="info" />
+        <logger name="springfox" level="info"/>
+        <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="trace"/>
+        <logger name="io.lettuce.core" level="info"/>
+        <logger name="org.apache.http.wire" level="ERROR"/>
+        <logger name="org.apache.http.headers" level="ERROR"/>info
+        <logger name="org.apache.http.impl.nio" level="ERROR"/>
+        <logger name="com.alibaba.nacos.shaded.io.grpc.netty.shaded.io.grpc.netty.NettyClientHandler" level="info"/>
+    </springProfile>
+</configuration>

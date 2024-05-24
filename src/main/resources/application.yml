@@ -1,0 +1,55 @@
+server:
+  port: 9002
+  tomcat:
+    basedir: ./temp
+  servlet:
+    context-path: /customerA
+
+
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: customerA
+
+
+# nacos配置
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.2.245:8848
+        file-extension: yml
+        namespace: ${spring.profiles.active}
+      discovery:
+        server-addr: 192.168.2.245:8848
+        namespace: ${spring.profiles.active}
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'info,health,prometheus,metrics,service-registry'
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+
+
+
+# ????nacos
+logging:
+  config: classpath:spring-logback.xml
+  level:
+    com.hongda.customera.feign.UserFeignService: debug
+    com.alibaba.nacos.client.naming: WARN
+    com.alibaba.nacos.client.config.impl: WARN
+
